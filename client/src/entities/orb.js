@@ -10,7 +10,7 @@ class Orb {
     );
     this.sprite.x = x || 0;
     this.sprite.y = y || 0;
-    this.move = MOVE_COMPONENT(this.sprite);
+    this.move = MOVE_COMPONENT(this);
   }
 
 }

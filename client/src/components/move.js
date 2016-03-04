@@ -1,10 +1,8 @@
-function MOVE_COMPONENT(sprite){
-  return move;
-
-  function move(dx, dy){
+function MOVE_COMPONENT(context){
+  return (dx, dy) => {
     // TODO: FPS Independent movement
-    sprite.x += dx;
-    sprite.y += dy;
+    context.sprite.x += dx;
+    context.sprite.y += dy;
   }
 }
 

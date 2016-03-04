@@ -15,9 +15,6 @@ $GAME.renderer = PIXI.autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, {
   autoResize: true
 });
 
-$GAME.renderer.view.style.position = "absolute";
-$GAME.renderer.view.style.top = "0px";
-$GAME.renderer.view.style.left = "50%";
 document.body.appendChild($GAME.renderer.view);
 
 PIXI.loader
