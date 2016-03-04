@@ -1,4 +1,3 @@
-import $GAME from 'entities/game.js';
 import Entity from 'entities/entity.js';
 import MoveComponent from 'components/move.js';
 

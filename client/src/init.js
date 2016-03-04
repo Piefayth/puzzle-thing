@@ -27,7 +27,6 @@ PIXI.loader
   .load(onAssetLoadComplete);
 
 function onAssetLoadComplete(){
-  $GAME.stage.disableVisibilityChange = true;
   $GAME.state = TITLE_STATE;
 
   PIXI.ticker.shared.minFPS = 0;
