@@ -1,6 +1,7 @@
 import Entity from 'entities/entity.js';
 
 class FpsDisplay extends Entity {
+
   constructor(x, y){
     super();
     this.sprite = new PIXI.Text('FPS:', {
@@ -15,6 +16,7 @@ class FpsDisplay extends Entity {
   update(){
     this.sprite.text = "FPS: " + Math.floor(PIXI.ticker.shared.FPS);
   }
+  
 }
 
 export default FpsDisplay;

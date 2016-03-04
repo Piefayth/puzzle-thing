@@ -33,5 +33,5 @@ function onAssetLoadComplete(){
   PIXI.ticker.shared.add(deltaTime => {
     $GAME.state.tick();
     $GAME.renderer.render($GAME.stage);
-  }, this);
+  });
 }
