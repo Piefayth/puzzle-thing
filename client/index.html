@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="/vendor/pixi.js"></script>
+    <script src="node_modules/systemjs/dist/system.js"></script>
+    <script>
+      // set our baseURL reference path
+      System.config({
+        baseURL: '/src',
+        paths: {
+          'traceur': "./vendor/traceur.js"
+        }
+      });
+
+      System.import('init.js');
+    </script>
+  </head>
+  <body>
+
+  </body>
+</html>
