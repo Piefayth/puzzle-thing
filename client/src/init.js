@@ -27,9 +27,12 @@ PIXI.loader
   .load(onAssetLoadComplete);
 
 function onAssetLoadComplete(){
+  $GAME.stage.disableVisibilityChange = true;
   $GAME.state = TITLE_STATE;
+
+  PIXI.ticker.shared.minFPS = 0;
   PIXI.ticker.shared.add(deltaTime => {
-    $GAME.state.tick(deltaTime);
+    $GAME.state.tick();
     $GAME.renderer.render($GAME.stage);
   }, this);
 }

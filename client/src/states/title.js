@@ -9,12 +9,12 @@ function setup(){
   $GAME.Orbs[0].addChild(new Orb(15, 15));
 }
 
-function tick(){
+function tick(dt){
   $GAME.Orbs[0].move(1, 0);
   $GAME.Orbs[1].move(1, 1);
   $GAME.Orbs[2].move(0, 1);
   $GAME.Orbs[0].Orbs.forEach(orb => {
-    orb.move(2, 0);
+    orb.move(3, 0);
   })
 }
 
