@@ -6,7 +6,6 @@ import TITLE_STATE from 'states/title.js';
 const GAME_WIDTH = 800;
 const GAME_HEIGHT = 800;
 
-
 $GAME.stage = new PIXI.Container();
 $GAME.renderer = PIXI.autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, {
   antialiasing: false,
@@ -30,8 +29,14 @@ function onAssetLoadComplete(){
   $GAME.state = TITLE_STATE;
 
   PIXI.ticker.shared.minFPS = 0;
-  PIXI.ticker.shared.add(deltaTime => {
+  PIXI.ticker.shared.add(gameLoop);
+}
+
+function gameLoop(){
+    $GAME.toBeDestroyed.forEach(entity => {
+      entity.destroy();
+    })
+    $GAME.toBeDestroyed = [];
     $GAME.state.tick();
     $GAME.renderer.render($GAME.stage);
-  });
 }

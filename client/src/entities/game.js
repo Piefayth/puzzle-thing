@@ -4,6 +4,7 @@ class Game extends Entity {
 
   constructor(){
     super();
+    this.toBeDestroyed = [];
   }
 
   // convenience setter for state cleanups
@@ -18,6 +19,11 @@ class Game extends Entity {
   // have to alias state so we can set it in the setter
   get state(){
     return this._state;
+  }
+
+  // override entity's implementation. we will never destroy a Game
+  destroy(entity){
+    this.toBeDestroyed.push(entity);
   }
 
 };
