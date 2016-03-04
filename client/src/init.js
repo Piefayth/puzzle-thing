@@ -28,11 +28,8 @@ PIXI.loader
 
 function onAssetLoadComplete(){
   $GAME.state = TITLE_STATE;
-  requestAnimationFrame(gameLoop);
-}
-
-function gameLoop() {
-  $GAME.state.tick();
-  requestAnimationFrame(gameLoop);
-  $GAME.renderer.render($GAME.stage);
+  PIXI.ticker.shared.add(deltaTime => {
+    $GAME.state.tick(deltaTime);
+    $GAME.renderer.render($GAME.stage);
+  }, this);
 }

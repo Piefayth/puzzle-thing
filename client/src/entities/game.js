@@ -1,11 +1,9 @@
 import Entity from 'entities/entity.js';
-import EntityStorage from 'components/entitystorage.js';
 
 class Game extends Entity {
 
   constructor(){
     super();
-    this.addComponent(EntityStorage);
   }
 
   // convenience setter for state cleanups

@@ -1,24 +1,26 @@
 import $GAME from 'entities/game.js';
+import State from 'states/state.js';
 import Orb from 'entities/orb.js';
 
-const TITLE_STATE = {
-
-  setup: function(){
-    $GAME.entities.add(new Orb());
-    $GAME.entities.add(new Orb(0, 50));
-    $GAME.entities.add(new Orb(0, 250));
-  },
-
-  tick: function(){
-    $GAME.entities.Orbs[0].move(1, 0);
-    $GAME.entities.Orbs[1].move(1, 1);
-    $GAME.entities.Orbs[2].move(0, 1);
-  },
-
-  cleanup: function(){
-    console.log('cleaning up title state');
-  }
-
+function setup(){
+  $GAME.addChild(new Orb());
+  $GAME.addChild(new Orb(0, 50));
+  $GAME.addChild(new Orb(0, 250));
+  $GAME.Orbs[0].addChild(new Orb(15, 15));
 }
 
+function tick(){
+  $GAME.Orbs[0].move(1, 0);
+  $GAME.Orbs[1].move(1, 1);
+  $GAME.Orbs[2].move(0, 1);
+  $GAME.Orbs[0].Orbs.forEach(orb => {
+    orb.move(2, 0);
+  })
+}
+
+function cleanup(){
+  console.log('cleaning up title state');
+}
+
+const TITLE_STATE = new State(setup, tick, cleanup);
 export default TITLE_STATE;
