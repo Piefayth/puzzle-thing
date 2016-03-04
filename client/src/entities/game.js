@@ -1,9 +1,11 @@
-import EntityStorage from 'util/entitystorage.js';
+import Entity from 'entities/entity.js';
+import EntityStorage from 'components/entitystorage.js';
 
-class Game {
+class Game extends Entity {
 
   constructor(){
-    this.entityStorage = new EntityStorage();
+    super();
+    this.addComponent(EntityStorage);
   }
 
   // convenience setter for state cleanups
@@ -18,11 +20,6 @@ class Game {
   // have to alias state so we can set it in the setter
   get state(){
     return this._state;
-  }
-
-  // alias for entityStorage
-  get entities(){
-    return this.entityStorage;
   }
 
 };
