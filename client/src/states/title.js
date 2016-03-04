@@ -10,7 +10,7 @@ const TITLE_STATE = {
   },
 
   tick: function(){
-    $GAME.entities.all("Orbs").forEach(orb => {
+    $GAME.entities.Orbs.forEach(orb => {
       orb.move(1, 0);
     });
   },

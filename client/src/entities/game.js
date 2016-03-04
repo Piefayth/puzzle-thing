@@ -6,6 +6,7 @@ class Game {
     this.entityStorage = new EntityStorage();
   }
 
+  // convenience setter for state cleanups
   set state(state){
     if(this._state) {
       this._state.cleanup();
@@ -14,10 +15,12 @@ class Game {
     this._state = state;
   }
 
+  // have to alias state so we can set it in the setter
   get state(){
     return this._state;
   }
 
+  // alias for entityStorage
   get entities(){
     return this.entityStorage;
   }
