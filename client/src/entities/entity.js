@@ -66,12 +66,12 @@ class Entity {
     if(child && child.sprite){
       if(this.stage){   // Top level parent
         this.stage.removeChild(child.sprite);
-        delete this[child.constructor.name + 's'][id];  // ex. $GAME.Orbs[id]
-      } else {
+      } else if(this.sprite){
         this.sprite.removeChild(child);
       }
       child.sprite.destroy();
     }
+    delete this[child.constructor.name + 's'][id];  // ex. $GAME.Orbs[id]
     delete this.children[id];
   }
 
