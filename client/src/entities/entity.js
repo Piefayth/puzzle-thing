@@ -1,5 +1,4 @@
 import UUID from 'utils/uuid.js';
-import ScaleComponent from 'components/scale.js';
 
 class Entity {
 
@@ -7,7 +6,6 @@ class Entity {
     this.children = {};
     this.addChildHandlers = [];
     this.id = UUID();
-    this.addComponent(ScaleComponent);
   }
 
   addComponent(component){

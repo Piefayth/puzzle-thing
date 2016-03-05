@@ -12,8 +12,8 @@ class Game extends Entity {
     if(this._state) {
       this._state.cleanup();
     }
-    state.setup();
     this._state = state;
+    this._state.setup();
   }
 
   // have to alias state so we can set it in the setter
