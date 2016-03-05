@@ -17,5 +17,9 @@ function moveXy(x, y){
   );
 }
 
-var MoveComponent = new Component(moveDirection, moveXy);
+function init(){
+
+}
+
+var MoveComponent = new Component(init, moveDirection, moveXy);
 export default MoveComponent;
