@@ -75,6 +75,10 @@ class Entity {
     delete this.children[id];
   }
 
+  tick(){
+    
+  }
+
 }
 
 export default Entity;

@@ -7,6 +7,9 @@ const GAME_WIDTH = 800;
 const GAME_HEIGHT = 800;
 
 $GAME.stage = new PIXI.Container();
+$GAME.stage.interactive = true;
+$GAME.stage.hitArea = new PIXI.Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
 $GAME.renderer = PIXI.autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, {
   antialiasing: false,
   transparent: false,

@@ -1,6 +1,7 @@
 import Entity from 'entities/entity.js';
 import MoveComponent from 'components/move.js';
 import ScaleComponent from 'components/scale.js';
+import DragComponent from 'components/drag.js';
 
 class Orb extends Entity {
 
@@ -14,6 +15,8 @@ class Orb extends Entity {
     this.sprite.y = y || 0;
     this.addComponent(MoveComponent);
     this.addComponent(ScaleComponent);
+    this.addComponent(DragComponent);
+    this.enableDrag();
   }
 
 }

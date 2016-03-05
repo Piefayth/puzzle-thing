@@ -18,7 +18,7 @@ function setup(){
 }
 
 function tick(){
-  $GAME.each("Orb", orb => orb.moveDirection(90, 5));
+  //$GAME.each("Orb", orb => orb.moveDirection(90, 5));
   $GAME.each("FpsDisplay", fps => fps.update());
 }
 
