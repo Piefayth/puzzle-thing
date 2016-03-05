@@ -29,6 +29,20 @@ class Entity {
     }
   }
 
+  // Entity.each("Orb", orb => orb.move());
+  each(type, f){
+    type = type + 's';
+    for(var id in this[type]){
+      f(this[type][id]);
+    }
+  }
+
+  eachChild(f){
+    for(var id in this.children){
+      f(id, this.children[id]);
+    }
+  }
+
   destroy(){
     for(var id in this.children){
       this.removeChild(id);

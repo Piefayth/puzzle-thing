@@ -4,29 +4,27 @@ import Orb from 'entities/orb.js';
 import FpsDisplay from 'entities/fps.js';
 
 function setup(){
-  var specialOrb = new Orb();
-  $GAME.addChild(specialOrb);
-  specialOrb.addChild(new Orb(0, 300));
+  this.specialOrb = new Orb();
+  $GAME.addChild(this.specialOrb);
+  this.specialOrb.addChild(new Orb(0, 300));
   $GAME.addChild(new Orb(0, 50));
   $GAME.addChild(new Orb(100, 0));
   $GAME.addChild(new FpsDisplay(5, 5));
   setTimeout(() => {
-    $GAME.destroy($GAME.Orbs[Object.keys($GAME.Orbs)[0]]);
-  }, 1000);
+    $GAME.state = TITLE_STATE;
+  }, 3000);
 }
 
 function tick(){
-  for(var orb in $GAME.Orbs){
-    $GAME.Orbs[orb].move(0, 5);
-  }
-
-  for(var fps in $GAME.FpsDisplays){
-    $GAME.FpsDisplays[fps].update();
-  }
+  this.specialOrb.move(90, 5);
+  $GAME.each("Orb", orb => orb.move(0, 5));
+  $GAME.each("FpsDisplay", fps => fps.update());
 }
 
 function cleanup(){
-  console.log('cleaning up title state');
+  $GAME.eachChild((id, child) => {
+    child.destroy();
+  });
 }
 
 
