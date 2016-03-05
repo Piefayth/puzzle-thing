@@ -5,7 +5,6 @@ class Entity {
   constructor(){
     this.children = {};
     this.id = UUID();
-    this.scale = 1;
   }
 
   addComponent(component){
