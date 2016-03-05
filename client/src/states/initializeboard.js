@@ -1,27 +1,32 @@
 import $GAME from 'entities/game.js';
 import State from 'states/state.js';
 import Board from 'entities/board.js';
+import Background from 'entities/background.js';
 import Orb from 'entities/orb.js';
 import FpsDisplay from 'entities/fps.js';
+import BOARD_READY from 'states/boardready.js';
 
 function setup(){
-  this.board = new Board(8, 6);
+  this.background = new Background();
 
-  this.board.setScale(
-    $GAME.GAME_WIDTH / this.board.sprite.texture.width,
-    $GAME.GAME_HEIGHT / this.board.sprite.texture.height
+  this.background.setScale(
+    $GAME.GAME_WIDTH / this.background.sprite.texture.width,
+    $GAME.GAME_HEIGHT / this.background.sprite.texture.height
   );
 
-  // order matters
+  $GAME.addChild(this.background);
+
+  this.board = new Board(8, 6);
+  this.board.setScale(this.background.scale);
   $GAME.addChild(this.board);
+
+  this.board.sprite.y = ($GAME.GAME_HEIGHT / 2) * this.board.scale.y;
+  this.board.sprite.x = ($GAME.GAME_WIDTH * (8/5) * this.board.scale.x);
+  this.board.setup($GAME);
+
   $GAME.addChild(new FpsDisplay(5, 5));
 
-  for(let i = 0; i < this.board.width; i++){
-    for(let j = 0; j < this.board.height; j++){
-      let tempOrb = new Orb(0, 0);
-      this.board.addChild(tempOrb);
-    }
-  }
+  $GAME.state = BOARD_READY;
 
 }
 

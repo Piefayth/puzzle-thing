@@ -7,8 +7,16 @@ class Orb extends Entity {
   constructor(x, y, type){
     super();
     this.type = type || 0;
+    this.types = [
+      'img/GreenOrb.png',
+      "img/MagentaOrb.png",
+      "img/PurpleOrb.png",
+      "img/RedOrb.png",
+      "img/BlueOrb.png",
+      "img/YellowOrb.png"
+    ];
     this.sprite = new PIXI.Sprite(
-      PIXI.loader.resources['img/GreenOrb.png'].texture
+      PIXI.loader.resources[this.types[type]].texture
     );
     this.sprite.x = x || 0;
     this.sprite.y = y || 0;

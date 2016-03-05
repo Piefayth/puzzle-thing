@@ -25,7 +25,8 @@ PIXI.loader
         "img/RedOrb.png",
         "img/BlueOrb.png",
         "img/YellowOrb.png",
-        "img/board.png"])
+        "img/board.png",
+        "img/background.png"])
   .load(onAssetLoadComplete);
 
 function onAssetLoadComplete(){
