@@ -5,6 +5,7 @@ class Entity {
   constructor(){
     this.children = {};
     this.id = UUID();
+    this.scale = 1;
   }
 
   addComponent(component){
@@ -15,8 +16,8 @@ class Entity {
     this.children[child.id] = child;
     child.parent = this;
 
-    // But also ensure easy access to children by name
-    // ex. $GAME.Orbs[0].Orbs
+    // Ensure easy access to children by name
+    // ex. $GAME.Orbs
     var entityType = child.constructor.name + 's';
     this[entityType] = this[entityType] || {};
     this[entityType][child.id] = child;
@@ -33,7 +34,7 @@ class Entity {
   each(type, f){
     type = type + 's';
     for(var id in this[type]){
-      f(this[type][id]);
+      f(this[type][id], id);
     }
   }
 
@@ -44,9 +45,7 @@ class Entity {
   }
 
   destroy(){
-    for(var id in this.children){
-      this.removeChild(id);
-    }
+    this.eachChild(this.removeChild);
 
     if(this.parent){
       this.parent.removeChild(this.id);

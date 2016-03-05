@@ -1,13 +1,22 @@
 class Component {
 
   constructor(...args){
-    this.methods = args;
+    this.methodsAndObjects = args;
   }
 
+  // A component file can export either a function or an object.
+  // Note that 'this' here is the component itself.
   generate(context){
-    this.methods.map(method => {
-      this[method.name] = method.bind(context);
+    this.methodsAndObjects.map(item => {
+      if(typeof item === 'function'){
+        this[item.name] = item.bind(context);
+      } else {
+        for(var key in item){
+          this[key] = item[key];
+        }
+      }
     });
+
     return this;
   }
 

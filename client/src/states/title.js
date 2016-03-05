@@ -4,20 +4,21 @@ import Orb from 'entities/orb.js';
 import FpsDisplay from 'entities/fps.js';
 
 function setup(){
-  this.specialOrb = new Orb();
-  $GAME.addChild(this.specialOrb);
-  this.specialOrb.addChild(new Orb(0, 300));
-  $GAME.addChild(new Orb(0, 50));
-  $GAME.addChild(new Orb(100, 0));
   $GAME.addChild(new FpsDisplay(5, 5));
+  for(let i = 0; i < 12; i++){
+    var orb = new Orb(0, 15 + (i * 100));
+    orb.setScale(0.25);
+    $GAME.addChild(orb);
+  }
+
   setTimeout(() => {
     $GAME.state = TITLE_STATE;
   }, 3000);
+
 }
 
 function tick(){
-  this.specialOrb.move(90, 5);
-  $GAME.each("Orb", orb => orb.move(0, 5));
+  $GAME.each("Orb", orb => orb.moveDirection(90, 5));
   $GAME.each("FpsDisplay", fps => fps.update());
 }
 

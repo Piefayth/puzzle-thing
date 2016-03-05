@@ -33,10 +33,10 @@ function onAssetLoadComplete(){
 }
 
 function gameLoop(){
-    $GAME.toBeDestroyed.forEach(entity => {
-      entity.destroy();
-    })
-    $GAME.toBeDestroyed = [];
-    $GAME.state.tick();
-    $GAME.renderer.render($GAME.stage);
+  $GAME.toBeDestroyed.forEach(entity => {
+    entity.destroy();
+  })
+  $GAME.toBeDestroyed = [];
+  $GAME.state.tick();
+  $GAME.renderer.render($GAME.stage);
 }

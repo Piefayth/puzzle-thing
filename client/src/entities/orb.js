@@ -1,5 +1,6 @@
 import Entity from 'entities/entity.js';
 import MoveComponent from 'components/move.js';
+import ScaleComponent from 'components/scale.js';
 
 class Orb extends Entity {
 
@@ -12,6 +13,7 @@ class Orb extends Entity {
     this.sprite.x = x || 0;
     this.sprite.y = y || 0;
     this.addComponent(MoveComponent);
+    this.addComponent(ScaleComponent);
   }
 
 }
