@@ -1,10 +1,13 @@
 import UUID from 'utils/uuid.js';
+import ScaleComponent from 'components/scale.js';
 
 class Entity {
 
   constructor(){
     this.children = {};
+    this.addChildHandlers = [];
     this.id = UUID();
+    this.addComponent(ScaleComponent);
   }
 
   addComponent(component){
@@ -27,6 +30,8 @@ class Entity {
     } else if (this.stage && child.sprite){
       this.stage.addChild(child.sprite);
     }
+
+    this.addChildHandlers.forEach(handler => handler(child));
   }
 
   // Entity.each("Orb", orb => orb.move());
@@ -76,7 +81,7 @@ class Entity {
   }
 
   tick(){
-    
+
   }
 
 }
