@@ -4,6 +4,7 @@ class Entity {
 
   constructor(){
     this.children = {};
+    this.addChildHandlers = [];
     this.id = UUID();
   }
 
@@ -14,6 +15,9 @@ class Entity {
   addChild(child){
     this.children[child.id] = child;
     child.parent = this;
+    if(this.stage){
+      child.stage = this.stage;
+    }
 
     // Ensure easy access to children by name
     // ex. $GAME.Orbs
@@ -21,12 +25,11 @@ class Entity {
     this[entityType] = this[entityType] || {};
     this[entityType][child.id] = child;
 
-    // Add the child sprite to the parent sprite (if exists) or the stage.
-    if (this.sprite && child.sprite) {
-      this.sprite.addChild(child.sprite);
-    } else if (this.stage && child.sprite){
+    if (this.stage && child.sprite){
       this.stage.addChild(child.sprite);
     }
+
+    this.addChildHandlers.forEach(handler => handler(child));
   }
 
   // Entity.each("Orb", orb => orb.move());
@@ -64,11 +67,7 @@ class Entity {
 
     var child = this.children[id];
     if(child && child.sprite){
-      if(this.stage){   // Top level parent
-        this.stage.removeChild(child.sprite);
-      } else if(this.sprite){
-        this.sprite.removeChild(child);
-      }
+      this.stage.removeChild(child.sprite);
       child.sprite.destroy();
     }
     delete this[child.constructor.name + 's'][id];  // ex. $GAME.Orbs[id]
@@ -76,7 +75,7 @@ class Entity {
   }
 
   tick(){
-    
+
   }
 
 }

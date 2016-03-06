@@ -10,12 +10,15 @@ function moveDirection(angle, distance){
 
 function moveXy(x, y){
   var dt = PIXI.ticker.shared.deltaTime;
-
   this.sprite.position.set(
     this.sprite.x + (x * dt),
     this.sprite.y + (y * dt)
   );
 }
 
-var MoveComponent = new Component(moveDirection, moveXy);
+function init(){
+
+}
+
+var MoveComponent = new Component(init, moveDirection, moveXy);
 export default MoveComponent;

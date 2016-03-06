@@ -2,15 +2,14 @@
 
 import $GAME from 'entities/game.js';
 import TITLE_STATE from 'states/title.js';
+import INITIALIZE_BOARD from 'states/initializeboard.js';
 
-const GAME_WIDTH = 800;
-const GAME_HEIGHT = 800;
+$GAME.GAME_WIDTH = 800;
+$GAME.GAME_HEIGHT = 800;
 
 $GAME.stage = new PIXI.Container();
-$GAME.stage.interactive = true;
-$GAME.stage.hitArea = new PIXI.Rectangle(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-$GAME.renderer = PIXI.autoDetectRenderer(GAME_WIDTH, GAME_HEIGHT, {
+$GAME.renderer = PIXI.autoDetectRenderer($GAME.GAME_WIDTH, $GAME.GAME_HEIGHT, {
   antialiasing: false,
   transparent: false,
   resolution: window.devicePixelRatio,
@@ -25,11 +24,13 @@ PIXI.loader
         "img/PurpleOrb.png",
         "img/RedOrb.png",
         "img/BlueOrb.png",
-        "img/YellowOrb.png"])
+        "img/YellowOrb.png",
+        "img/board.png",
+        "img/background.png"])
   .load(onAssetLoadComplete);
 
 function onAssetLoadComplete(){
-  $GAME.state = TITLE_STATE;
+  $GAME.state = INITIALIZE_BOARD;
 
   PIXI.ticker.shared.minFPS = 0;
   PIXI.ticker.shared.add(gameLoop);
