@@ -42,12 +42,7 @@ class Orb extends Entity {
     // texture should be square so width is fine
     var r = Math.pow(this.sprite.width/2, 2);
 
-
-    if(D < r){
-      return true;
-    } else {
-      return false;
-    }
+    return D < r;
   }
 
   checkOrbCollisions(e){
