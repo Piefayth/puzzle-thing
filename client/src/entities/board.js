@@ -8,6 +8,9 @@ class Board extends Entity {
     this.sprite = new PIXI.Sprite(
       PIXI.loader.resources['img/board.png'].texture
     );
+    this.sprite.interactive = true;
+    this.sprite.buttonMode = true;
+    this.sprite.defaultCursor = "none";
     this.sprite.x = 0;
     this.sprite.y = 0;
     this.width = width;
@@ -25,8 +28,8 @@ class Board extends Entity {
 
         tempOrb.offsety = 35;
         tempOrb.offsetx = 8;
-        tempOrb.paddingx = 2;
-        tempOrb.paddingy = 2;
+        tempOrb.paddingx = 0;
+        tempOrb.paddingy = 0;
         tempOrb.sprite.x = ((tempOrb.sprite.width + tempOrb.paddingx) * i + (tempOrb.offsetx));
         tempOrb.sprite.y = ((tempOrb.sprite.height + tempOrb.paddingy) * j) + (($GAME.GAME_HEIGHT / 2) + tempOrb.offsety);
 

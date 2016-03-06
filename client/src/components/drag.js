@@ -2,8 +2,6 @@ import Component from 'components/component.js';
 
 function init(){
   this.sprite.interactive = true;
-  this.sprite.buttonMode = true;
-  this.sprite.defaultCursor = 'auto';
 
   this.sprite.on('mousedown', e => {
     if(!this._drag_held){
@@ -20,7 +18,7 @@ function init(){
       this.dragHandlers.forEach(handler => handler.call(this, e));
       this.sprite.x = e.data.global.x;
       this.sprite.y = e.data.global.y;
-    } else if(this._drag_held){
+    } else if(this._drag_held) {
       this.releaseHandlers.forEach(handler => handler.call(this, e));
       this._drag_held = false;
     }

@@ -82,11 +82,9 @@ class Orb extends Entity {
     this.sprite.anchor.set(0, 0);
     this.sprite.x = this.old.x;
     this.sprite.y = this.old.y;
-    this.sprite.defaultCursor = 'auto';
   }
 
   saveStartPosition(){
-    this.sprite.defaultCursor = 'none';
     this.old = new PIXI.Point(this.sprite.x, this.sprite.y);
     this.sprite.anchor.set(0.5, 0.5);
   }
