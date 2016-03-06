@@ -5,17 +5,16 @@ function init(){
 
   this.sprite.on('mousedown', e => {
     this._drag_held = true;
-    this.sprite.anchor.set(0.5, 0.5);
-    this._drag_old = new PIXI.Point(this.sprite.x, this.sprite.y);
+    this.mousedownHandlers.forEach(handler => handler.call(this, e));
     this.sprite.x = e.data.global.x;
     this.sprite.y = e.data.global.y;
   });
 
   this.sprite.on('mousemove', e => {
     if(this._drag_held){
+      this.dragHandlers.forEach(handler => handler.call(this, e));
       this.sprite.x = e.data.global.x;
       this.sprite.y = e.data.global.y;
-      this.dragHandlers.forEach(handler => handler.call(this, e));
     }
   });
 
@@ -35,5 +34,10 @@ function addReleaseHandler(f){
   this.releaseHandlers.push(f);
 }
 
-var DragComponent = new Component(init, addDragHandler, addReleaseHandler);
+function addMousedownHandler(f){
+  this.mousedownHandlers = this.mousedownHandlers || [];
+  this.mousedownHandlers.push(f);
+}
+
+var DragComponent = new Component(init, addDragHandler, addReleaseHandler, addMousedownHandler);
 export default DragComponent;

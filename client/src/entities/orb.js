@@ -26,6 +26,7 @@ class Orb extends Entity {
     this.addComponent(DragComponent);
     this.addDragHandler(this.checkOrbCollisions);
     this.addReleaseHandler(this.snapOrb);
+    this.addMousedownHandler(this.saveStartPosition);
   }
 
   assertIntersectPoint(point){
@@ -68,20 +69,24 @@ class Orb extends Entity {
     this.x = temp.x;
     this.y = temp.y;
 
-    temp.x = orb.sprite.x;
-    temp.y = orb.sprite.y;
+    temp = new PIXI.Point(orb.sprite.x, orb.sprite.y);
 
-    orb.sprite.x = this._drag_old.x;
-    orb.sprite.y = this._drag_old.y;
+    orb.sprite.x = this.old.x;
+    orb.sprite.y = this.old.y;
 
-    this._drag_old.x = temp.x;
-    this._drag_old.y = temp.y;
+    this.old.x = temp.x;
+    this.old.y = temp.y;
   }
 
   snapOrb(){
-    this.sprite.x = this._drag_old.x;
-    this.sprite.y = this._drag_old.y;
     this.sprite.anchor.set(0, 0);
+    this.sprite.x = this.old.x;
+    this.sprite.y = this.old.y;
+  }
+
+  saveStartPosition(){
+    this.old = new PIXI.Point(this.sprite.x, this.sprite.y);
+    this.sprite.anchor.set(0.5, 0.5);
   }
 
 }

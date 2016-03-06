@@ -8,7 +8,6 @@ function setup(){
 }
 
 function tick(){
-  // If two orbs are touching, swap their positions.
   $GAME.each("FpsDisplay", fps => fps.update());
 }
 
