@@ -1,6 +1,5 @@
 import Entity from 'entities/entity.js';
 import Orb from 'entities/orb.js';
-import MoveComponent from 'components/move.js';
 
 class Board extends Entity {
 
@@ -24,7 +23,7 @@ class Board extends Entity {
         this.addChild(tempOrb);
         tempOrb.sprite.scale.set(0.225, 0.225);
 
-        tempOrb.offsety = 35; //padding
+        tempOrb.offsety = 35;
         tempOrb.offsetx = 8;
         tempOrb.paddingx = 2;
         tempOrb.paddingy = 2;

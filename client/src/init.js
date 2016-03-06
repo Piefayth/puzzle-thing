@@ -42,6 +42,5 @@ function gameLoop(){
   })
   $GAME.toBeDestroyed = [];
   $GAME.state.tick();
-  console.log($GAME.state.tick);
   $GAME.renderer.render($GAME.stage);
 }
