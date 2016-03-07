@@ -9,6 +9,7 @@ class Orb extends Entity {
   constructor(x, y, sx, sy){
     super();
     this.type = Math.floor(Math.random() * 6);
+    this.swapTime = 80;
     this.types = [
       'img/GreenOrb.png',
       "img/MagentaOrb.png",
@@ -64,9 +65,8 @@ class Orb extends Entity {
           if(!this.parent.Orbs2D[i][j]._drag_held &&
             this.parent.Orbs2D[i][j].assertIntersectPoint(point)){
             if(!this.parent.Orbs2D[i][j].swapping){
-
               this.parent.Orbs2D[i][j].swapping = true;
-              this.queue(this.swapWith, this.parent.Orbs2D[i][j]);
+              this.swapWith(this.parent.Orbs2D[i][j]);
             }
           }
         }
@@ -74,21 +74,8 @@ class Orb extends Entity {
 
   }
 
-  queue(fn, ...args){
-    this.q = this.q || [];
-
-    args.push(() => {
-      this.q.shift();
-      if(this.q.length){
-        this.q[0]();
-      }
-    })
-    fn.apply(this, args)
-  }
-
-  swapWith(orb, cb){
+  swapWith(orb){
     var temp = {};
-    cb = cb || function(){};
 
     temp.x = orb.x;
     temp.y = orb.y;
@@ -104,9 +91,8 @@ class Orb extends Entity {
     //orb.sprite.x = this.old.x;
     //orb.sprite.y = this.old.y;
 
-    orb.animateTo(this.old.x, this.old.y, 50, () => {
+    orb.animateTo(this.old.x, this.old.y, this.swapTime, () => {
       orb.swapping = false;
-      cb();
     });
 
     this.old.x = temp.x;

@@ -20,14 +20,23 @@ function animateTo(x, y, duration, callback){
     return Math.atan2(x2 - x1, y2 - y1) * (180 / Math.PI);
   }
 
+
   var distance = distanceBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
   var angle = angleBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
+  var speed = distance / duration;
+  var toleranceXhigh = x + ((speed * 10) / 2);
+  var toleranceXlow = x - ((speed * 10) / 2);
+  var toleranceYhigh = y + ((speed * 10) / 2);
+  var toleranceYlow = y - ((speed * 10) / 2);
 
-  this.animations[id] = () =>{
-    var speed = distance / duration;
+  this.animations[id] = () => {
+
     this.moveDirection(angle, speed);
 
-    if(Math.abs(this.sprite.x - x) < speed && Math.abs(this.sprite.y - y) < speed){
+    if(this.sprite.x < toleranceXhigh &&
+      this.sprite.x > toleranceXlow &&
+      this.sprite.y < toleranceYhigh &&
+      this.sprite.y > toleranceYlow){
       this.sprite.x = x;
       this.sprite.y = y;
       callback();
