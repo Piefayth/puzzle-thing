@@ -9,7 +9,7 @@ class Orb extends Entity {
   constructor(x, y, sx, sy){
     super();
     this.type = Math.floor(Math.random() * 6);
-    this.swapTime = 80;
+    this.swapTime = 65;
     this.types = [
       'img/GreenOrb.png',
       "img/MagentaOrb.png",
@@ -76,6 +76,7 @@ class Orb extends Entity {
 
   swapWith(orb){
     var temp = {};
+    console.log('swap');
 
     temp.x = orb.x;
     temp.y = orb.y;
@@ -93,6 +94,7 @@ class Orb extends Entity {
 
     orb.animateTo(this.old.x, this.old.y, this.swapTime, () => {
       orb.swapping = false;
+      console.log('done');
     });
 
     this.old.x = temp.x;
