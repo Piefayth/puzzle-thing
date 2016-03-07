@@ -64,6 +64,7 @@ class Board extends Entity {
           recur.call(this, x + 1, y);
         }
         if(y < this.height - 1) recur.call(this, x, y + 1);
+        if(y > 0) recur.call(this, x, y - 1);
       }
     }
 
@@ -74,6 +75,7 @@ class Board extends Entity {
       if( x < this.width - 2 &&
         this.Orbs2D[x + 1][y].type === type &&
         this.Orbs2D[x + 2][y].type === type){
+          console.log('right');
           return true;
       }
 
@@ -84,6 +86,7 @@ class Board extends Entity {
       if(y < this.height - 2 &&
         this.Orbs2D[x][y + 1].type === type &&
         this.Orbs2D[x][y + 2].type === type){
+          console.log('down');
           return true;
       }
 
@@ -91,6 +94,7 @@ class Board extends Entity {
       if(x > 0 && x < this.width - 1 &&
         this.Orbs2D[x + 1][y].type === type &&
         this.Orbs2D[x - 1][y].type === type){
+          console.log('h middle');
           return true;
       }
 
@@ -98,6 +102,7 @@ class Board extends Entity {
       if(y > 0 && y < this.height - 1 &&
         this.Orbs2D[x][y + 1].type === type &&
         this.Orbs2D[x][y - 1].type === type){
+          console.log('vert middle');
           return true;
       }
 
@@ -105,6 +110,7 @@ class Board extends Entity {
       if(x > 1 &&
         this.Orbs2D[x - 1][y].type === type &&
         this.Orbs2D[x - 2][y].type === type){
+          console.log('left');
           return true;
       }
 
@@ -112,6 +118,7 @@ class Board extends Entity {
       if(y > 1 &&
         this.Orbs2D[x][y - 1].type === type &&
         this.Orbs2D[x][y - 2].type === type){
+          console.log('up');
         return true;
       }
 
