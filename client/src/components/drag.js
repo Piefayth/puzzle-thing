@@ -2,7 +2,11 @@ import Component from 'components/component.js';
 
 function init(){
   this.sprite.interactive = true;
-  
+  this.dragHandlers = [];
+  this.releaseHandlers = [];
+  this.mousedownHandlers = [];
+  this.lastAnimationId = null;
+
   this.sprite.on('mousedown', e => {
     if(!this._drag_held){
       this.mousedownHandlers.forEach(handler => handler.call(this, e));
@@ -16,8 +20,8 @@ function init(){
     // if we are dragging something and our current position is still inside the parent
     if(this._drag_held && this.parent.sprite.containsPoint(e.data.global)){
       this.dragHandlers.forEach(handler => handler.call(this, e));
-      this.sprite.x = e.data.global.x;
-      this.sprite.y = e.data.global.y;
+      this.removeAnimation(this.lastAnimationId);
+      this.lastAnimationId = this.animateTo(e.data.global.x, e.data.global.y, 20);
     } else if(this._drag_held) {
       this.releaseHandlers.forEach(handler => handler.call(this, e));
       this._drag_held = false;
@@ -26,6 +30,7 @@ function init(){
 
   this.sprite.on('mouseup', e => {
     if(this._drag_held){
+      this.removeAllAnimations();
       this.releaseHandlers.forEach(handler => handler.call(this, e));
       this._drag_held = false;
     }
@@ -33,19 +38,20 @@ function init(){
 }
 
 function addDragHandler(f){
-  this.dragHandlers = this.dragHandlers || [];
   this.dragHandlers.push(f);
 }
 
 function addReleaseHandler(f){
-  this.releaseHandlers = this.releaseHandlers || [];
   this.releaseHandlers.push(f);
 }
 
 function addMousedownHandler(f){
-  this.mousedownHandlers = this.mousedownHandlers || [];
   this.mousedownHandlers.push(f);
 }
 
-var DragComponent = new Component(init, addDragHandler, addReleaseHandler, addMousedownHandler);
+function removeDragHandler(){
+  this.dragHandlers = [];
+}
+
+var DragComponent = new Component(init, addDragHandler, addReleaseHandler, addMousedownHandler, removeDragHandler);
 export default DragComponent;

@@ -9,7 +9,7 @@ class Orb extends Entity {
   constructor(x, y, sx, sy){
     super();
     this.type = Math.floor(Math.random() * 6);
-    this.swapTime = 65;
+    this.swapTime = 50;
     this.types = [
       'img/GreenOrb.png',
       "img/MagentaOrb.png",
@@ -31,12 +31,12 @@ class Orb extends Entity {
     this.offsetx = 8;
     this.paddingx = 2;
     this.paddingy = 2;
+    this.collidedOrb = {};
     this.addComponent(MoveComponent);
     this.addComponent(DragComponent);
     this.addComponent(AnimateComponent);
-    this.addDragHandler(this.checkOrbCollisions);
+    this.addMousedownHandler(this.clickOrb);
     this.addReleaseHandler(this.snapOrb);
-    this.addMousedownHandler(this.saveStartPosition);
   }
 
   assertIntersectPoint(point){
@@ -57,65 +57,78 @@ class Orb extends Entity {
     return D < r;
   }
 
-  checkOrbCollisions(e){
+  checkOrbCollisions(dragEvent){
+    // On each drag event
+    var board = this.parent.Orbs2D;
+    var point = { x: this.sprite.x, y: this.sprite.y };
 
-      var point = e.data.global;
-      for(let i = 0; i < this.parent.Orbs2D.length; i++){
-        for(let j = 0; j < this.parent.Orbs2D[i].length; j++){
-          if(!this.parent.Orbs2D[i][j]._drag_held &&
-            this.parent.Orbs2D[i][j].assertIntersectPoint(point)){
-            if(!this.parent.Orbs2D[i][j].swapping){
-              this.parent.Orbs2D[i][j].swapping = true;
-              this.swapWith(this.parent.Orbs2D[i][j]);
+    for(let i = Math.max(this.x - 1, 0); i < Math.min(this.x + 2, board.length); i++){
+      for(let j = Math.max(this.y - 1, 0); j < Math.min(this.y + 2, board[i].length); j++){
+        // If we are not already colliding with this orb
+        if(this.collidedOrb.x != i || this.collidedOrb.y != j){
+          // But we are colliding with it
+          if(board[i][j].assertIntersectPoint(point)){
+            // End the animation for the previous orb
+            if(Object.keys(this.collidedOrb).length > 0) {
+              this.collidable = true;
+              this.collidedOrb.snapOrb();
             }
+            // Update the orb we are colliding with
+            this.collidedOrb = board[i][j];
+            this.swapWith(board[i][j]);
           }
         }
+
       }
+    }
+
 
   }
 
   swapWith(orb){
     var temp = {};
-    console.log('swap');
+    // `this` is being held
+    // `orb` is being swapped to the position of `this`
 
-    temp.x = orb.x;
-    temp.y = orb.y;
+    temp.x = this.x;
+    temp.y = this.y;
 
-    orb.x = this.x;
-    orb.y = this.y;
+    this.x = orb.x;
+    this.y = orb.y;
 
-    this.x = temp.x;
-    this.y = temp.y;
+    orb.x = temp.x;
+    orb.y = temp.y;
 
-    temp = new PIXI.Point(orb.sprite.x, orb.sprite.y);
+    this.parent.Orbs2D[orb.x][orb.y] = orb;
+    this.parent.Orbs2D[this.x][this.y] = this;
 
-    //orb.sprite.x = this.old.x;
-    //orb.sprite.y = this.old.y;
-
-    orb.animateTo(this.old.x, this.old.y, this.swapTime, () => {
-      orb.swapping = false;
-      console.log('done');
+    var home = this.calculateHomePosition(orb.x, orb.y)
+    orb.animateTo(home.x, home.y, this.swapTime, () => {
+      if(this.collidedOrb.id === orb.id){
+        this.collidedOrb = false;
+      }
     });
 
-    this.old.x = temp.x;
-    this.old.y = temp.y;
+  }
 
-    temp = this.parent.Orbs2D[orb.x][orb.y];
-    this.parent.Orbs2D[orb.x][orb.y] = this.parent.Orbs2D[this.x][this.y];
-    this.parent.Orbs2D[this.x][this.y] = temp;
-
-
+  clickOrb(){
+    this.sprite.anchor.set(0.5, 0.5);
+    this.addDragHandler(this.checkOrbCollisions);
   }
 
   snapOrb(){
     this.sprite.anchor.set(0, 0);
-    this.sprite.x = this.old.x;
-    this.sprite.y = this.old.y;
+    this.removeAllAnimations();
+    this.removeDragHandler();
+    var home = this.calculateHomePosition(this.x, this.y);
+    this.sprite.x = home.x;
+    this.sprite.y = home.y;
   }
 
-  saveStartPosition(){
-    this.old = new PIXI.Point(this.sprite.x, this.sprite.y);
-    this.sprite.anchor.set(0.5, 0.5);
+  calculateHomePosition(x, y){
+    var newx = ((this.parent.Orbs2D[x][y].sprite.width + this.parent.Orbs2D[x][y].paddingx) * x + (this.parent.Orbs2D[x][y].offsetx));
+    var newy = ((this.parent.Orbs2D[x][y].sprite.height + this.parent.Orbs2D[x][y].paddingy) * y) + ((this.parent.parent.GAME_HEIGHT / 2) + this.parent.Orbs2D[x][y].offsety);
+    return {x: newx, y: newy};
   }
 
 }

@@ -20,35 +20,45 @@ function animateTo(x, y, duration, callback){
     return Math.atan2(x2 - x1, y2 - y1) * (180 / Math.PI);
   }
 
+  var calcTrajectory = function(x, y, angle){
 
+  }
+
+  var orig = { x: this.sprite.x, y: this.sprite.y };
   var distance = distanceBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
   var angle = angleBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
   var speed = distance / duration;
-  var toleranceXhigh = x + ((speed * 10) / 2);
-  var toleranceXlow = x - ((speed * 10) / 2);
-  var toleranceYhigh = y + ((speed * 10) / 2);
-  var toleranceYlow = y - ((speed * 10) / 2);
+  var tolerance = speed * 10;
 
   this.animations[id] = () => {
 
     this.moveDirection(angle, speed);
 
-    if(this.sprite.x < toleranceXhigh &&
-      this.sprite.x > toleranceXlow &&
-      this.sprite.y < toleranceYhigh &&
-      this.sprite.y > toleranceYlow){
+    if(distanceBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y) < tolerance){
       this.sprite.x = x;
       this.sprite.y = y;
-      callback();
-      delete this.animations[id];
+      if(this.animations[id]){
+        callback();
+        delete this.animations[id];
+      }
     }
   }
 
+  return id;
+
+}
+
+function removeAllAnimations(){
+  this.animations = {};
+}
+
+function removeAnimation(id){
+  delete this.animations[id];
 }
 
 function init(){
   this.animations = {};
 }
 
-var AnimateComponent = new Component(init, animate, animateTo);
+var AnimateComponent = new Component(init, animate, animateTo, removeAllAnimations, removeAnimation);
 export default AnimateComponent;
