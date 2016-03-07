@@ -1,12 +1,13 @@
 import Entity from 'entities/entity.js';
 import MoveComponent from 'components/move.js';
+import AnimateComponent from 'components/animate.js';
 import DragComponent from 'components/drag.js';
 
 class Orb extends Entity {
 
-  constructor(x, y, type){
+  constructor(x, y, sx, sy){
     super();
-    this.type = type || 0;
+    this.type = Math.floor(Math.random() * 6);
     this.types = [
       'img/GreenOrb.png',
       "img/MagentaOrb.png",
@@ -16,14 +17,21 @@ class Orb extends Entity {
       "img/YellowOrb.png"
     ];
     this.sprite = new PIXI.Sprite(
-      PIXI.loader.resources[this.types[type]].texture
+      PIXI.loader.resources[this.types[this.type]].texture
     );
-    this.x;
-    this.y;
-    this.sprite.x = x || 0;
-    this.sprite.y = y || 0;
+    this.x = x;
+    this.y = y;
+    sx = sx || 0;
+    sy = sy || 0;
+    this.sprite.scale.set(0.225, 0.225);
+    this.sprite.position.set(sx, sy);
+    this.offsety = 35;
+    this.offsetx = 8;
+    this.paddingx = 2;
+    this.paddingy = 2;
     this.addComponent(MoveComponent);
     this.addComponent(DragComponent);
+    this.addComponent(AnimateComponent);
     this.addDragHandler(this.checkOrbCollisions);
     this.addReleaseHandler(this.snapOrb);
     this.addMousedownHandler(this.saveStartPosition);
@@ -35,6 +43,7 @@ class Orb extends Entity {
 
     var Xp = point.x;
     var Yp = point.y;
+
     var Xc = this.sprite.x + ((this.sprite.width) / 2);
     var Yc = this.sprite.y + ((this.sprite.height) / 2);
 
@@ -60,6 +69,7 @@ class Orb extends Entity {
 
   swapWith(orb){
     var temp = {};
+
     temp.x = orb.x;
     temp.y = orb.y;
 
@@ -76,6 +86,10 @@ class Orb extends Entity {
 
     this.old.x = temp.x;
     this.old.y = temp.y;
+
+    temp = this.parent.Orbs2D[orb.x][orb.y];
+    this.parent.Orbs2D[orb.x][orb.y] = this.parent.Orbs2D[this.x][this.y];
+    this.parent.Orbs2D[this.x][this.y] = temp;
   }
 
   snapOrb(){
