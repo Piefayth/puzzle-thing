@@ -29,6 +29,17 @@ PIXI.loader
         "img/background.png"])
   .load(onAssetLoadComplete);
 
+document.addEventListener("visibilitychange", () => {
+  if(document.hidden){
+    $GAME.savedState = $GAME.state.tick.bind($GAME.state);
+    $GAME.state.tick = function(){};
+  } else {
+    if($GAME.savedState){
+      $GAME.state.tick = $GAME.savedState;
+    }
+  }
+});
+
 function onAssetLoadComplete(){
   $GAME.state = INITIALIZE_BOARD;
 

@@ -5,6 +5,7 @@ import Background from 'entities/background.js';
 import Orb from 'entities/orb.js';
 import FpsDisplay from 'entities/fps.js';
 import BOARD_READY from 'states/boardready.js';
+import BOARD_UPDATING from 'states/boardupdating.js';
 
 function setup(){
   this.background = new Background();
@@ -18,7 +19,29 @@ function setup(){
   this.board.sprite.y = 401;
   $GAME.addChild(this.board);
 
-  this.board.setup($GAME);
+  for(let i = 0; i < this.board.width; i++){
+    this.board.Orbs2D[i] = [];
+    for(let j = 0; j < this.board.height; j++){
+      let tempOrb = new Orb(0, 0);
+      this.board.addChild(tempOrb);
+
+      tempOrb.sprite.x = ((tempOrb.sprite.width + tempOrb.paddingx) * i + (tempOrb.offsetx));
+      tempOrb.sprite.y = ((tempOrb.sprite.height + tempOrb.paddingy) * j) + (($GAME.GAME_HEIGHT / 2) + tempOrb.offsety);
+
+      tempOrb.x = i;
+      tempOrb.y = j;
+      this.board.Orbs2D[i][j] = tempOrb;
+    }
+  }
+
+  this.board.each("Orb", orb => {
+    orb.addReleaseHandler(e => {
+      this.board.matches = this.board.analyzeBoard();
+      if(this.board.matches){
+        $GAME.state = BOARD_UPDATING;
+      }
+    })
+  })
 
   $GAME.addChild(new FpsDisplay(5, 5));
 

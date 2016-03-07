@@ -1,7 +1,7 @@
 import Component from 'components/component.js';
 
 function moveDirection(angle, distance){
-  var dt = PIXI.ticker.shared.deltaTime;
+  var dt = PIXI.ticker.shared.deltaTime * 10;
   angle *= (Math.PI / 180);
 
   this.sprite.x += Math.sin(angle) * distance * dt;
@@ -9,10 +9,10 @@ function moveDirection(angle, distance){
 }
 
 function moveXy(x, y){
-  var dt = PIXI.ticker.shared.deltaTime;
+  var dt = PIXI.ticker.shared.deltaTime * 10;
   this.sprite.position.set(
-    this.sprite.x + (x * dt),
-    this.sprite.y + (y * dt)
+    this.sprite.x + (x / dt),
+    this.sprite.y + (y / dt)
   );
 }
 

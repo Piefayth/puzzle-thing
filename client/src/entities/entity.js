@@ -55,7 +55,7 @@ class Entity {
   }
 
   // This needs to remove EVERY reference to the child.
-  removeChild(id){
+  removeChild(id,  child){
     // Let you pass in the literal entity instead
     if(typeof id !== "string"){
       id = id.id
@@ -70,6 +70,7 @@ class Entity {
       this.stage.removeChild(child.sprite);
       child.sprite.destroy();
     }
+
     delete this[child.constructor.name + 's'][id];  // ex. $GAME.Orbs[id]
     delete this.children[id];
   }
