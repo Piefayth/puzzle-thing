@@ -18,27 +18,119 @@ class Board extends Entity {
     this.Orbs2D = [];
   }
 
-  setup($GAME){
-    for(let i = 0; i < this.width; i++){
-      let row = [];
-      for(let j = 0; j < this.height; j++){
-        let tempOrb = new Orb(0, 0, Math.floor(Math.random() * 6));
-        this.addChild(tempOrb);
-        tempOrb.sprite.scale.set(0.225, 0.225);
-
-        tempOrb.offsety = 35;
-        tempOrb.offsetx = 8;
-        tempOrb.paddingx = 0;
-        tempOrb.paddingy = 0;
-        tempOrb.sprite.x = ((tempOrb.sprite.width + tempOrb.paddingx) * i + (tempOrb.offsetx));
-        tempOrb.sprite.y = ((tempOrb.sprite.height + tempOrb.paddingy) * j) + (($GAME.GAME_HEIGHT / 2) + tempOrb.offsety);
-
-        tempOrb.x = i;
-        tempOrb.y = j;
-        row.push(tempOrb);
-      }
-      this.Orbs2D.push(row);
+  analyzeBoard(){
+    var matches = this.getMatches();
+    if(matches.length){
+      return matches;
+    } else {
+      return false;
     }
+  }
+
+  getMatches(){
+    var checked = [];
+    for(let i = 0; i < this.width; i++){
+      checked[i] = [];
+      for(let j = 0; j < this.height; j++){
+        checked[i][j] = false;
+      }
+    }
+
+    var type = 0;
+    var matches = [];
+    var match = [];
+
+    for(let i = 0; i < this.width; i++){
+      for(let j = 0; j < this.height; j++){
+        if(checked[i][j] !== true){
+          match = [];
+          type = this.Orbs2D[i][j].type
+          recur.call(this, i, j);
+          if(match.length) matches.push(match);
+        }
+      }
+    }
+
+    return matches;
+
+    function recur(x, y){
+      if(checked[x][y] === true) {
+        return;
+      }
+      if(isOrbPartOfMatch.call(this, x, y)){
+        checked[x][y] = true;
+        match.push({x: x, y: y});
+        if(x < this.width - 1) {
+          recur.call(this, x + 1, y);
+        }
+        if(y < this.height - 1) recur.call(this, x, y + 1);
+        if(y > 0) recur.call(this, x, y - 1);
+      }
+    }
+
+    function isOrbPartOfMatch(x, y){
+      if(this.Orbs2D[x][y].type !== type) return;
+
+      // Match right (XOO)?
+      if( x < this.width - 2 &&
+        this.Orbs2D[x + 1][y].type === type &&
+        this.Orbs2D[x + 2][y].type === type){
+          return true;
+      }
+
+      // Match two down? (X)
+      //                 (0)
+      //                 (0)
+
+      if(y < this.height - 2 &&
+        this.Orbs2D[x][y + 1].type === type &&
+        this.Orbs2D[x][y + 2].type === type){
+          return true;
+      }
+
+      // Match horizontally middle (OXO)
+      if(x > 0 && x < this.width - 1 &&
+        this.Orbs2D[x + 1][y].type === type &&
+        this.Orbs2D[x - 1][y].type === type){
+          return true;
+      }
+
+      // Match vertically middle
+      if(y > 0 && y < this.height - 1 &&
+        this.Orbs2D[x][y + 1].type === type &&
+        this.Orbs2D[x][y - 1].type === type){
+          return true;
+      }
+
+      // Match left (OOX)?
+      if(x > 1 &&
+        this.Orbs2D[x - 1][y].type === type &&
+        this.Orbs2D[x - 2][y].type === type){
+          return true;
+      }
+
+      // Match two up
+      if(y > 1 &&
+        this.Orbs2D[x][y - 1].type === type &&
+        this.Orbs2D[x][y - 2].type === type){
+        return true;
+      }
+
+      return false;
+    }
+
+  }
+
+  boardDebug(){
+    console.log('---------------------');
+    for(let i = 0; i < this.height; i++){
+      var out = "";
+      for(let j = 0; j < this.width; j++){
+        out += '(' + this.Orbs2D[j][i].x + ', ' + this.Orbs2D[j][i].y + ') ';
+      }
+      console.log(out + '\n');
+    }
+    console.log('---------------------');
   }
 
 
