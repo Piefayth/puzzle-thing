@@ -2,12 +2,16 @@ import $GAME from 'entities/game.js';
 import State from 'states/state.js';
 import BOARD_READY from 'states/boardready.js';
 import Orb from 'entities/orb.js';
+import delayfor from 'utils/delayfor.js';
 
 function setup(){
   for(let id in $GAME.Boards){
     // TODO: Multiplayer support
     this.board = $GAME.Boards[id]
+    this.totalMatches = 0;
   }
+
+  this.board.each("Orb", orb => orb.sprite.interactive = false);
 
   removeMatches.call(this, this.board.matches);
 
@@ -15,7 +19,13 @@ function setup(){
 }
 
 function tick(){
-  this.board.each("Orb", orb => orb.animate());
+  if(this.board){
+
+    this.board.each("Orb", orb => {
+      orb.animate()
+    });
+    $GAME.each("FpsDisplay", fps => fps.update());
+  }
 }
 
 function cleanup(){
@@ -23,10 +33,10 @@ function cleanup(){
 }
 
 function removeMatches(matches){
+  this.totalMatches += matches.length;
 
   matches.forEach((match, matchIndex) => {
-
-    window.setTimeout(() => {
+    delayfor(200 * matchIndex + 1, () => {
       match.forEach(point => {
         let sx = this.board.Orbs2D[point.x][point.y].sprite.x;
         let sy = this.board.Orbs2D[point.x][point.y].sprite.y;
@@ -35,14 +45,23 @@ function removeMatches(matches){
       })
 
       if(matchIndex === matches.length - 1){
-        window.setTimeout(() => {
+        delayfor(200, () => {
           gravityBoard.call(this);
-          this.board.boardDebug();
-        }, 300)
+          delayfor(200, () => {
+            this.board.matches = this.board.analyzeBoard();
+            if(this.board.matches){
+              removeMatches.call(this, this.board.matches);
+            } else {
+              console.log(this.totalMatches + " Combo");
+              $GAME.state = BOARD_READY;
+            }
+          });
+        });
       }
+    })
 
-    }, 300 * matchIndex + 1);
-  });
+
+  })
 }
 
 function gravityBoard(){
@@ -63,14 +82,13 @@ function gravityBoard(){
           delete this.board.Orbs2D[i][k];
           //j++;
         } else {  // there is not an orb above this one
-          console.log('adding orb at ' + i + ', ' + j);
           this.board.Orbs2D[i][j] = new Orb(i, j)
+          this.board.Orbs2D[i][j].sprite.interactive = false;
           this.board.addChild(this.board.Orbs2D[i][j]);
           var x = ((this.board.Orbs2D[i][j].sprite.width + this.board.Orbs2D[i][j].paddingx) * i + (this.board.Orbs2D[i][j].offsetx));
           var y = ((this.board.Orbs2D[i][j].sprite.height + this.board.Orbs2D[i][j].paddingy) * j) + (($GAME.GAME_HEIGHT / 2) + this.board.Orbs2D[i][j].offsety);
           this.board.Orbs2D[i][j].animateTo(x, y, 600);
           this.board.Orbs2D[i][j].addReleaseHandler(e => {
-            console.log('released');
             this.board.matches = this.board.analyzeBoard();
             if(this.board.matches){
               $GAME.state = BOARD_UPDATING;

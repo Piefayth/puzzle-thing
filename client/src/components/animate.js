@@ -24,8 +24,8 @@ function animateTo(x, y, duration){
     // we need to move distance / (duration * dt)
     var angle = angleBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
     var distance = distanceBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
+    this.moveDirection(angle, distance/2);
 
-    this.moveDirection(angle, distance);
     if(Math.abs(this.sprite.x - x) < 0.1 && Math.abs(this.sprite.y - y) < 0.1){
       delete this.animations[id];
     }

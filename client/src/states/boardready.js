@@ -5,6 +5,7 @@ function setup(){
   for(let id in $GAME.Boards){
     this.board = $GAME.Boards[id]
   }
+  this.board.each("Orb", orb => orb.sprite.interactive = true);
 }
 
 function tick(){
