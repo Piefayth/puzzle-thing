@@ -7,7 +7,9 @@ function animate(){
   }
 }
 
-function animateTo(x, y, duration){
+function animateTo(x, y, duration, callback){
+  console.log('animate');
+  callback = callback || function(){};
   var id = UUID();
 
   var distanceBetweenTwoPoints = function(x1, y1, x2, y2){
@@ -18,20 +20,18 @@ function animateTo(x, y, duration){
     return Math.atan2(x2 - x1, y2 - y1) * (180 / Math.PI);
   }
 
-  var animateFunction = function(){
-    var dt = PIXI.ticker.shared.deltaTime;
-    // the distance between this.sprite.x, this.sprite.y and x, y
-    // we need to move distance / (duration * dt)
-    var angle = angleBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
-    var distance = distanceBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
-    this.moveDirection(angle, distance/2);
+  var distance = distanceBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
+  var angle = angleBetweenTwoPoints(this.sprite.x, this.sprite.y, x, y);
 
-    if(Math.abs(this.sprite.x - x) < 0.1 && Math.abs(this.sprite.y - y) < 0.1){
+  this.animations[id] = () =>{
+    var speed = distance / duration;
+    this.moveDirection(angle, speed);
+
+    if(Math.abs(this.sprite.x - x) < 0.5 && Math.abs(this.sprite.y - y) < 0.5){
+      callback();
       delete this.animations[id];
     }
   }
-
-  this.animations[id] = animateFunction;
 
 }
 

@@ -78,7 +78,7 @@ function gravityBoard(){
           this.board.Orbs2D[i][j].y = j;
           var x = ((this.board.Orbs2D[i][j].sprite.width + this.board.Orbs2D[i][j].paddingx) * i + (this.board.Orbs2D[i][j].offsetx));
           var y = ((this.board.Orbs2D[i][j].sprite.height + this.board.Orbs2D[i][j].paddingy) * j) + (($GAME.GAME_HEIGHT / 2) + this.board.Orbs2D[i][j].offsety);
-          this.board.Orbs2D[i][j].animateTo(x, y, 600);
+          this.board.Orbs2D[i][j].animateTo(x, y, 100);
           delete this.board.Orbs2D[i][k];
           //j++;
         } else {  // there is not an orb above this one
@@ -87,7 +87,7 @@ function gravityBoard(){
           this.board.addChild(this.board.Orbs2D[i][j]);
           var x = ((this.board.Orbs2D[i][j].sprite.width + this.board.Orbs2D[i][j].paddingx) * i + (this.board.Orbs2D[i][j].offsetx));
           var y = ((this.board.Orbs2D[i][j].sprite.height + this.board.Orbs2D[i][j].paddingy) * j) + (($GAME.GAME_HEIGHT / 2) + this.board.Orbs2D[i][j].offsety);
-          this.board.Orbs2D[i][j].animateTo(x, y, 600);
+          this.board.Orbs2D[i][j].animateTo(x, y, 100);
           this.board.Orbs2D[i][j].addReleaseHandler(e => {
             this.board.matches = this.board.analyzeBoard();
             if(this.board.matches){

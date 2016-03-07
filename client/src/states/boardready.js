@@ -9,6 +9,7 @@ function setup(){
 }
 
 function tick(){
+  this.board.each("Orb", orb => orb.animate())
   $GAME.each("FpsDisplay", fps => fps.update());
 }
 

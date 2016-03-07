@@ -2,6 +2,7 @@ import Entity from 'entities/entity.js';
 import MoveComponent from 'components/move.js';
 import AnimateComponent from 'components/animate.js';
 import DragComponent from 'components/drag.js';
+import delayfor from 'utils/delayfor.js'
 
 class Orb extends Entity {
 
@@ -56,19 +57,25 @@ class Orb extends Entity {
   }
 
   checkOrbCollisions(e){
-    var point = e.data.global;
-    for(let i = 0; i < this.parent.Orbs2D.length; i++){
-      for(let j = 0; j < this.parent.Orbs2D[i].length; j++){
-        if(!this.parent.Orbs2D[i][j]._drag_held &&
-          this.parent.Orbs2D[i][j].assertIntersectPoint(point)){
-          this.swapWith(this.parent.Orbs2D[i][j]);
+
+      var point = e.data.global;
+      for(let i = 0; i < this.parent.Orbs2D.length; i++){
+        for(let j = 0; j < this.parent.Orbs2D[i].length; j++){
+          if(!this.parent.Orbs2D[i][j]._drag_held &&
+            this.parent.Orbs2D[i][j].assertIntersectPoint(point)){
+            if(!this.parent.Orbs2D[i][j].swapping){
+              this.parent.Orbs2D[i][j].swapping = true;
+              this.swapWith(this.parent.Orbs2D[i][j]);
+            }
+          }
         }
       }
-    }
+
   }
 
   swapWith(orb){
     var temp = {};
+    console.log('swap');
 
     temp.x = orb.x;
     temp.y = orb.y;
@@ -81,8 +88,13 @@ class Orb extends Entity {
 
     temp = new PIXI.Point(orb.sprite.x, orb.sprite.y);
 
-    orb.sprite.x = this.old.x;
-    orb.sprite.y = this.old.y;
+    //orb.sprite.x = this.old.x;
+    //orb.sprite.y = this.old.y;
+
+    orb.animateTo(this.old.x, this.old.y, 50, () => {
+      console.log('animate callback');
+      orb.swapping = false
+    });
 
     this.old.x = temp.x;
     this.old.y = temp.y;
@@ -90,6 +102,8 @@ class Orb extends Entity {
     temp = this.parent.Orbs2D[orb.x][orb.y];
     this.parent.Orbs2D[orb.x][orb.y] = this.parent.Orbs2D[this.x][this.y];
     this.parent.Orbs2D[this.x][this.y] = temp;
+
+
   }
 
   snapOrb(){

@@ -2,7 +2,7 @@ import Component from 'components/component.js';
 
 function init(){
   this.sprite.interactive = true;
-
+  
   this.sprite.on('mousedown', e => {
     if(!this._drag_held){
       this.mousedownHandlers.forEach(handler => handler.call(this, e));
