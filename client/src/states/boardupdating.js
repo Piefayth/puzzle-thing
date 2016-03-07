@@ -7,6 +7,7 @@ import delayfor from 'utils/delayfor.js';
 function setup(){
   this.GRAVITY_DELAY = 100;
   this.COMBO_DELAY = 125;
+  this.SKYFALL_MATCH_DELAY = 300;
 
   for(let id in $GAME.Boards){
     // TODO: Multiplayer support
@@ -50,7 +51,7 @@ function removeMatches(matches){
       if(matchIndex === matches.length - 1){
         delayfor(this.GRAVITY_DELAY, () => {
           gravityBoard.call(this);
-          delayfor(this.GRAVITY_DELAY, () => {
+          delayfor(this.SKYFALL_MATCH_DELAY, () => {
             this.board.matches = this.board.analyzeBoard();
             if(this.board.matches){
               removeMatches.call(this, this.board.matches);

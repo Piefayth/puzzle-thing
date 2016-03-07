@@ -9,7 +9,7 @@ class Orb extends Entity {
   constructor(x, y, sx, sy){
     super();
     this.type = Math.floor(Math.random() * 6);
-    this.swapTime = 50;
+    this.swapTime = 60;
     this.types = [
       'img/GreenOrb.png',
       "img/MagentaOrb.png",

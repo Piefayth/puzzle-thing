@@ -21,7 +21,7 @@ function init(){
     if(this._drag_held && this.parent.sprite.containsPoint(e.data.global)){
       this.dragHandlers.forEach(handler => handler.call(this, e));
       this.removeAnimation(this.lastAnimationId);
-      this.lastAnimationId = this.animateTo(e.data.global.x, e.data.global.y, 20);
+      this.lastAnimationId = this.animateTo(e.data.global.x, e.data.global.y, 10);
     } else if(this._drag_held) {
       this.releaseHandlers.forEach(handler => handler.call(this, e));
       this._drag_held = false;
