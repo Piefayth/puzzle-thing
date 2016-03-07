@@ -8,7 +8,7 @@ function animate(){
 }
 
 function animateTo(x, y, duration, callback){
-  console.log('animate');
+
   callback = callback || function(){};
   var id = UUID();
 
@@ -27,7 +27,9 @@ function animateTo(x, y, duration, callback){
     var speed = distance / duration;
     this.moveDirection(angle, speed);
 
-    if(Math.abs(this.sprite.x - x) < 0.5 && Math.abs(this.sprite.y - y) < 0.5){
+    if(Math.abs(this.sprite.x - x) < speed && Math.abs(this.sprite.y - y) < speed){
+      this.sprite.x = x;
+      this.sprite.y = y;
       callback();
       delete this.animations[id];
     }

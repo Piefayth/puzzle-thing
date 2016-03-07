@@ -64,8 +64,9 @@ class Orb extends Entity {
           if(!this.parent.Orbs2D[i][j]._drag_held &&
             this.parent.Orbs2D[i][j].assertIntersectPoint(point)){
             if(!this.parent.Orbs2D[i][j].swapping){
+
               this.parent.Orbs2D[i][j].swapping = true;
-              this.swapWith(this.parent.Orbs2D[i][j]);
+              this.queue(this.swapWith, this.parent.Orbs2D[i][j]);
             }
           }
         }
@@ -73,9 +74,21 @@ class Orb extends Entity {
 
   }
 
-  swapWith(orb){
+  queue(fn, ...args){
+    this.q = this.q || [];
+
+    args.push(() => {
+      this.q.shift();
+      if(this.q.length){
+        this.q[0]();
+      }
+    })
+    fn.apply(this, args)
+  }
+
+  swapWith(orb, cb){
     var temp = {};
-    console.log('swap');
+    cb = cb || function(){};
 
     temp.x = orb.x;
     temp.y = orb.y;
@@ -92,8 +105,8 @@ class Orb extends Entity {
     //orb.sprite.y = this.old.y;
 
     orb.animateTo(this.old.x, this.old.y, 50, () => {
-      console.log('animate callback');
-      orb.swapping = false
+      orb.swapping = false;
+      cb();
     });
 
     this.old.x = temp.x;

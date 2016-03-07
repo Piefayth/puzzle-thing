@@ -5,6 +5,9 @@ import Orb from 'entities/orb.js';
 import delayfor from 'utils/delayfor.js';
 
 function setup(){
+  this.GRAVITY_DELAY = 100;
+  this.COMBO_DELAY = 125;
+
   for(let id in $GAME.Boards){
     // TODO: Multiplayer support
     this.board = $GAME.Boards[id]
@@ -36,7 +39,7 @@ function removeMatches(matches){
   this.totalMatches += matches.length;
 
   matches.forEach((match, matchIndex) => {
-    delayfor(200 * matchIndex + 1, () => {
+    delayfor(this.COMBO_DELAY * matchIndex + 1, () => {
       match.forEach(point => {
         let sx = this.board.Orbs2D[point.x][point.y].sprite.x;
         let sy = this.board.Orbs2D[point.x][point.y].sprite.y;
@@ -45,9 +48,9 @@ function removeMatches(matches){
       })
 
       if(matchIndex === matches.length - 1){
-        delayfor(200, () => {
+        delayfor(this.GRAVITY_DELAY, () => {
           gravityBoard.call(this);
-          delayfor(200, () => {
+          delayfor(this.GRAVITY_DELAY, () => {
             this.board.matches = this.board.analyzeBoard();
             if(this.board.matches){
               removeMatches.call(this, this.board.matches);
@@ -87,7 +90,7 @@ function gravityBoard(){
           this.board.addChild(this.board.Orbs2D[i][j]);
           var x = ((this.board.Orbs2D[i][j].sprite.width + this.board.Orbs2D[i][j].paddingx) * i + (this.board.Orbs2D[i][j].offsetx));
           var y = ((this.board.Orbs2D[i][j].sprite.height + this.board.Orbs2D[i][j].paddingy) * j) + (($GAME.GAME_HEIGHT / 2) + this.board.Orbs2D[i][j].offsety);
-          this.board.Orbs2D[i][j].animateTo(x, y, 100);
+          this.board.Orbs2D[i][j].animateTo(x, y, 150);
           this.board.Orbs2D[i][j].addReleaseHandler(e => {
             this.board.matches = this.board.analyzeBoard();
             if(this.board.matches){
