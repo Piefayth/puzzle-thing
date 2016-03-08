@@ -34,14 +34,14 @@ function setup(){
     }
   }
 
-  this.board.each("Orb", orb => {
-    orb.addReleaseHandler(e => {
-      this.board.matches = this.board.analyzeBoard();
-      if(this.board.matches){
-        $GAME.state = BOARD_UPDATING;
-      }
-    })
-  })
+  $GAME.orbReleaseHandler = function(e){
+    this.board.matches = this.board.analyzeBoard();
+    if(this.board.matches){
+      $GAME.state = BOARD_UPDATING;
+    }
+  }.bind(this); // the state
+
+  this.board.each("Orb", orb => orb.addReleaseHandler($GAME.orbReleaseHandler));
 
   $GAME.addChild(new FpsDisplay(5, 5));
 

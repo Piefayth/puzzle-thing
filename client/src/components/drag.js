@@ -5,7 +5,7 @@ function init(){
   this.dragHandlers = [];
   this.releaseHandlers = [];
   this.mousedownHandlers = [];
-  this.lastAnimationId = null;
+  this.lastDragAnimationId = null;
 
   this.sprite.on('mousedown', e => {
     if(!this._drag_held){
@@ -20,8 +20,8 @@ function init(){
     // if we are dragging something and our current position is still inside the parent
     if(this._drag_held && this.parent.sprite.containsPoint(e.data.global)){
       this.dragHandlers.forEach(handler => handler.call(this, e));
-      this.removeAnimation(this.lastAnimationId);
-      this.lastAnimationId = this.animateTo(e.data.global.x, e.data.global.y, 10);
+      this.removeAnimation(this.lastDragAnimationId);
+      this.lastDragAnimationId = this.animateTo(e.data.global.x, e.data.global.y, 10);
     } else if(this._drag_held) {
       this.releaseHandlers.forEach(handler => handler.call(this, e));
       this._drag_held = false;

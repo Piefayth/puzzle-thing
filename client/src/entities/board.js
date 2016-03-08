@@ -20,15 +20,12 @@ class Board extends Entity {
 
   analyzeBoard(){
     var matches = this.getMatches();
-    if(matches.length){
-      return matches;
-    } else {
-      return false;
-    }
+    return matches.length ? matches : false;
   }
 
   getMatches(){
     var checked = [];
+    // Initialize an 2D array of explicit false
     for(let i = 0; i < this.width; i++){
       checked[i] = [];
       for(let j = 0; j < this.height; j++){
@@ -45,7 +42,7 @@ class Board extends Entity {
         if(checked[i][j] !== true){
           match = [];
           type = this.Orbs2D[i][j].type
-          recur.call(this, i, j);
+          walkMatch.call(this, i, j);
           if(match.length) matches.push(match);
         }
       }
@@ -53,18 +50,17 @@ class Board extends Entity {
 
     return matches;
 
-    function recur(x, y){
+    function walkMatch(x, y){
       if(checked[x][y] === true) {
         return;
       }
       if(isOrbPartOfMatch.call(this, x, y)){
         checked[x][y] = true;
         match.push({x: x, y: y});
-        if(x < this.width - 1) {
-          recur.call(this, x + 1, y);
-        }
-        if(y < this.height - 1) recur.call(this, x, y + 1);
-        if(y > 0) recur.call(this, x, y - 1);
+
+        if(x < this.width - 1)  walkMatch.call(this, x + 1, y);
+        if(y < this.height - 1) walkMatch.call(this, x, y + 1);
+        if(y > 0)               walkMatch.call(this, x, y - 1);
       }
     }
 

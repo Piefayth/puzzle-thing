@@ -68,9 +68,8 @@ class Orb extends Entity {
         if(this.collidedOrb.x != i || this.collidedOrb.y != j){
           // But we are colliding with it
           if(board[i][j].assertIntersectPoint(point)){
-            // End the animation for the previous orb
+            // End the animation for the previous orb if there is one
             if(Object.keys(this.collidedOrb).length > 0) {
-              this.collidable = true;
               this.collidedOrb.snapOrb();
             }
             // Update the orb we are colliding with
@@ -87,8 +86,8 @@ class Orb extends Entity {
 
   swapWith(orb){
     var temp = {};
-    // `this` is being held
-    // `orb` is being swapped to the position of `this`
+    // Swap the X and Y grid positions on the orbs themselves, then
+    // swap them in the board.
 
     temp.x = this.x;
     temp.y = this.y;
@@ -102,6 +101,7 @@ class Orb extends Entity {
     this.parent.Orbs2D[orb.x][orb.y] = orb;
     this.parent.Orbs2D[this.x][this.y] = this;
 
+    // Animate. If we have a cached collision, and it's this orb, remove it.
     var home = this.calculateHomePosition(orb.x, orb.y)
     orb.animateTo(home.x, home.y, this.swapTime, () => {
       if(this.collidedOrb.id === orb.id){
