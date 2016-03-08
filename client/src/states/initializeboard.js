@@ -22,19 +22,18 @@ function setup(){
   for(let i = 0; i < this.board.width; i++){
     this.board.Orbs2D[i] = [];
     for(let j = 0; j < this.board.height; j++){
-      let tempOrb = new Orb(0, 0);
+      let tempOrb = new Orb(i, j);
       this.board.addChild(tempOrb);
 
-      tempOrb.sprite.x = ((tempOrb.sprite.width + tempOrb.paddingx) * i + (tempOrb.offsetx));
-      tempOrb.sprite.y = ((tempOrb.sprite.height + tempOrb.paddingy) * j) + (($GAME.GAME_HEIGHT / 2) + tempOrb.offsety);
+      var point = tempOrb.ownHome();
+      tempOrb.sprite.x = point.x
+      tempOrb.sprite.y = point.y;
 
-      tempOrb.x = i;
-      tempOrb.y = j;
       this.board.Orbs2D[i][j] = tempOrb;
     }
   }
 
-  $GAME.orbReleaseHandler = function(e){
+  $GAME.orbReleaseHandler = function(e){  // saving in global for reuse
     this.board.matches = this.board.analyzeBoard();
     if(this.board.matches){
       $GAME.state = BOARD_UPDATING;
@@ -42,9 +41,7 @@ function setup(){
   }.bind(this); // the state
 
   this.board.each("Orb", orb => orb.addReleaseHandler($GAME.orbReleaseHandler));
-
   $GAME.addChild(new FpsDisplay(5, 5));
-
   $GAME.state = BOARD_READY;
 }
 

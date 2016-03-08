@@ -131,6 +131,12 @@ class Orb extends Entity {
     return {x: newx, y: newy};
   }
 
+  ownHome(){
+    var newx = ((this.sprite.width + this.paddingx) * this.x + (this.offsetx));
+    var newy = ((this.sprite.height + this.paddingy) * this.y) + ((this.parent.parent.GAME_HEIGHT / 2) + this.offsety);
+    return {x: newx, y: newy}
+  }
+
 }
 
 export default Orb;

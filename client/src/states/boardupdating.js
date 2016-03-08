@@ -14,6 +14,7 @@ function setup(){
     // TODO: Multiplayer support
     this.board = $GAME.Boards[id]
     this.totalMatches = 0;
+    this.luckyMatches = 0;  // TODO
   }
 
   this.board.each("Orb", orb => orb.sprite.interactive = false);
