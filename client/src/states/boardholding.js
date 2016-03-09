@@ -60,22 +60,6 @@ function tick(){
       }
     }
   }
-  this.board.each("Orb", orb => {
-    orb.animate();
-    if($GAME.heldOrb && orb.assertIntersectPoint($GAME.heldOrb.sprite.position)){
-      if($GAME.collidedOrb.id && $GAME.collidedOrb.id != orb.id){
-        var point = $GAME.collidedOrb.ownHome();
-        $GAME.collidedOrb.removeAllAnimations();
-        $GAME.collidedOrb.sprite.position.set(point.x, point.y);
-        $GAME.collidedOrb = orb;
-        swapOrbs.call(this, $GAME.heldOrb, $GAME.collidedOrb);
-      } else if(!$GAME.collidedOrb.id) {
-        $GAME.collidedOrb = orb;
-        swapOrbs.call(this, $GAME.heldOrb, $GAME.collidedOrb);
-      }
-
-    }
-  })
   $GAME.each("FpsDisplay", fps => fps.update());
 }
 
