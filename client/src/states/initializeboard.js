@@ -33,14 +33,6 @@ function setup(){
     }
   }
 
-  $GAME.orbReleaseHandler = function(e){  // saving in global for reuse
-    this.board.matches = this.board.analyzeBoard();
-    if(this.board.matches){
-      $GAME.state = BOARD_UPDATING;
-    }
-  }.bind(this); // the state
-
-  this.board.each("Orb", orb => orb.addReleaseHandler($GAME.orbReleaseHandler));
   $GAME.addChild(new FpsDisplay(5, 5));
   $GAME.state = BOARD_READY;
 }

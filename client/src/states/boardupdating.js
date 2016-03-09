@@ -60,7 +60,6 @@ function skyfall(){
     if(this.board.matches){
       removeMatches.call(this, this.board.matches);
     } else {
-      console.log(this.totalMatches + " Combo");
       $GAME.state = BOARD_READY;
     }
   });
@@ -87,9 +86,7 @@ function gravityBoard(){
           this.board.addChild(this.board.Orbs2D[i][j]);
           var point = this.board.Orbs2D[i][j].calculateHomePosition(i, j);
           this.board.Orbs2D[i][j].animateTo(point.x, point.y, this.FALL_DURATION * 2);
-          this.board.Orbs2D[i][j].addReleaseHandler($GAME.orbReleaseHandler);
         }
-
       }
     }
   }

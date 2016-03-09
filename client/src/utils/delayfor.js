@@ -1,5 +1,5 @@
 var delayfor = {};
-delayfor = function(ms){
+delayfor = ms => {
 
   var counter;
   var promise = new Promise(delayedAction);
